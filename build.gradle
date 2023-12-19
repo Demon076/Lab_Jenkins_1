@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jacoco'
 }
 
 repositories {
@@ -11,9 +12,17 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter"
     testImplementation "org.assertj:assertj-core:3.24.2"
 }
+jacoco {
+    toolVersion = "0.8.9"
+    reportsDirectory = layout.buildDirectory.dir('jacoco/reports')
+}
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+jacocoTestReport {
+    dependsOn test
 }
 
 tasks.withType(JavaCompile) {
@@ -23,4 +32,3 @@ tasks.withType(JavaCompile) {
 tasks.withType(Test) {
     systemProperty "file.encoding", "UTF-8"
 }
-
